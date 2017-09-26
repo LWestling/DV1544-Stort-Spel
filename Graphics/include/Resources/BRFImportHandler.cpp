@@ -80,6 +80,18 @@ namespace Graphics
 
 
 			meshManager->addMesh(id, false, 0, 0, tempVertexCount, tempIndexCount, tempVertices, tempIndices, isScene);
+			
+
+			if (skeleton)
+			{
+				auto skeleton = currentFile->fetch->Skeleton(1)->skeletonDataContainer;
+
+				std::vector<BRFImporterLib::JointHeader> joints(skeleton->skeletonData->jointCount);
+				memcpy(joints.data(), skeleton->jointData.get(), sizeof(BRFImporterLib::JointHeader) * joints.size());
+
+				printf("a");
+			}
+
 
 
 		}

@@ -36,12 +36,14 @@ namespace BRFImporterLib
 	class SkeletonData
 	{
 	protected:
-		std::shared_ptr<SkeletonContainer> skeletonDataContainer;
 	public:
+		std::shared_ptr<SkeletonContainer> skeletonDataContainer;
 		void setData(std::shared_ptr<SkeletonContainer> srcSkeletonData);
 		AnimationHeader* GetAnimation(unsigned int id);
 		unsigned int GetAnimationID(unsigned int id);
 		SkeletonHeader* GetSkeletonData();
+		JointHeader* GetJointData();
+
 		
 		//CON DECON
 		SkeletonData();
