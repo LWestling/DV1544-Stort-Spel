@@ -9,13 +9,13 @@
 #include "Datatypes.h"
 #include "WICTextureLoader.h"
 #include "Lights\LightGrid.h"
-#include "Lights\DirectionalLight.h"
 #include "Resources\ResourceManager.h"
 #include "Resources\DepthStencil.h"
 #include "Resources\ResourceManager.h"
 #include "Resources\Shader.h"
 #include "Utility\ConstantBuffer.h"
 #include "Utility\StructuredBuffer.h"
+#include "SkyRenderer.h"
 
 namespace Graphics
 {
@@ -28,6 +28,7 @@ namespace Graphics
         void queueRender(RenderInfo * renderInfo);
         void initialize(ID3D11Device * gDevice, ID3D11DeviceContext * gDeviceContext);
 
+		void updateLight(float deltaTime, Camera * camera);
     private:
         typedef  std::unordered_map<ModelID, std::vector<InstanceData>> InstanceQueue_t;
         std::vector<RenderInfo*> renderQueue;
@@ -35,7 +36,7 @@ namespace Graphics
 
         DepthStencil depthStencil;
 
-		DepthStencil shadowDepthStencil;
+		SkyRenderer skyRenderer;
 
 		LightGrid grid;
 		DirectX::CommonStates *states;
@@ -56,24 +57,16 @@ namespace Graphics
         ///// SUPER TEMP
         ID3D11Buffer *GUIvb;
         ID3D11BlendState *transparencyBlendState;
-		
-
-		////LITE TEMP
-		DirectionalLight lightDir;
-		ID3D11SamplerState* shadowSampler;
-
         
         void cull();
         void writeInstanceData();
         void draw();
         void drawGUI();
-		void drawShadows();
 		
 
         void drawToBackbuffer(ID3D11ShaderResourceView * texture);
 
         void createBlendState();
         void createGUIBuffers();
-		void createShadowMap();
     };
 };
