@@ -20,12 +20,14 @@ namespace Graphics
         //void setShader(ID3D11DeviceContext * deviceContext, int flags = VS | PS);
 
         inline operator ID3D11InputLayout*()  { return inputLayout  ? inputLayout  : throw "Shader has no Input Layout"; }
-        inline operator ID3D11VertexShader*() { return vertexShader ? vertexShader : throw "Shader has no Vertex Shader"; }
-        inline operator ID3D11PixelShader*()  { return pixelShader  ? pixelShader  : throw "Shader has no Pixel Shader"; }
+		inline operator ID3D11VertexShader*() { return vertexShader ? vertexShader : throw "Shader has no Vertex Shader"; }
+		inline operator ID3D11GeometryShader*() { return geometryShader ? geometryShader : throw "Shader has no Geometry Shader"; }
+		inline operator ID3D11PixelShader*()  { return pixelShader  ? pixelShader  : throw "Shader has no Pixel Shader"; }
     private:
         ID3D11InputLayout  * inputLayout;
-        ID3D11VertexShader * vertexShader;
-        ID3D11PixelShader  * pixelShader;
+		ID3D11VertexShader * vertexShader;
+		ID3D11GeometryShader * geometryShader;
+		ID3D11PixelShader  * pixelShader;
     };
 
     class ComputeShader

@@ -19,6 +19,7 @@
 
 #define D3D_DEBUG_INFO
 
+#define DATA_PATH(path) L"Resources/Data/" path
 #define TEXTURE_PATH(path) L"Resources/Textures/" path
 #define TEXTURE_PATH_SIMPLE "Resources/Textures/"
 #define MODEL_PATH(path)   L"Resources/Models/" path

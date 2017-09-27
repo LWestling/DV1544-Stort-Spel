@@ -27,6 +27,7 @@
     <ClCompile Include="include\Camera.cpp" />
     <ClCompile Include="include\Lights\DirectionalLight.cpp" />
     <ClCompile Include="include\Lights\LightGrid.cpp" />
+    <ClCompile Include="include\ParticleSystem.cpp" />
     <ClCompile Include="include\Renderer.cpp" />
     <ClCompile Include="include\Resources\BRFImportHandler.cpp" />
     <ClCompile Include="include\Resources\DepthStencil.cpp" />
@@ -65,6 +66,7 @@
     <ClInclude Include="include\TempCube.h" />
     <ClInclude Include="include\ThrowIfFailed.h" />
     <ClInclude Include="include\Utility\ConstantBuffer.h" />
+    <ClInclude Include="include\ParticleSystem.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

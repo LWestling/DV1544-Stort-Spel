@@ -16,9 +16,13 @@
 #include "Animation\AnimatedTestCube.h"
 #endif
 
+#include "ParticleSystem.h"
+
 
 namespace Graphics
 {
+
+	ParticleSystem *FXSystem;
 
 	Renderer::Renderer(ID3D11Device * gDevice, ID3D11DeviceContext * gDeviceContext, ID3D11RenderTargetView * backBuffer, Camera *camera)
 		: forwardPlus(gDevice, SHADER_PATH("ForwardPlus.hlsl"), VERTEX_DESC)
@@ -43,6 +47,8 @@ namespace Graphics
 
         states = new DirectX::CommonStates(device);
         grid.initialize(camera, device, deviceContext, &resourceManager);
+
+		FXSystem = new ParticleSystem(gDevice, DATA_PATH("Particles.no"), 4096, 1, 1);
     }
 
 

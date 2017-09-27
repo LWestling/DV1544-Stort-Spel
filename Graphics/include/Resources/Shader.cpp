@@ -20,7 +20,7 @@ namespace Graphics
         pixelShader = nullptr;
 
 
-        ID3DBlob *vsShader, *psShader, *errorMsg;
+        ID3DBlob *vsShader, *gsShader, *psShader, *errorMsg;
 
         HRESULT vshr = D3DCompileFromFile(shaderPath, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "VS", "vs_5_0", SHADER_COMPILE_FLAGS, NULL, &vsShader, &errorMsg);
         if FAILED(vshr)
