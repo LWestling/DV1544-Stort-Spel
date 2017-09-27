@@ -89,9 +89,6 @@ namespace Graphics
 				std::vector<BRFImporterLib::JointHeader> joints(skeleton->skeletonData->jointCount);
 				memcpy(joints.data(), skeleton->jointData.get(), sizeof(BRFImporterLib::JointHeader) * joints.size());
 
-				std::vector<BRFImporterLib::JointCountHeader> jointCount(skeleton->skeletonData->jointCount);
-				memcpy(jointCount.data(), skeleton->jointData.get(), sizeof(BRFImporterLib::JointHeader) * jointCount.size());
-
 				printf("a");
 			}
 
