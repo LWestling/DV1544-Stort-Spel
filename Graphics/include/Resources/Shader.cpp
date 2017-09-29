@@ -13,36 +13,52 @@
 namespace Graphics
 {
 
-    Shader::Shader(ID3D11Device * device, LPCWSTR shaderPath, std::initializer_list<D3D11_INPUT_ELEMENT_DESC> inputDesc)
+    Shader::Shader(ID3D11Device * device, LPCWSTR shaderPath, std::initializer_list<D3D11_INPUT_ELEMENT_DESC> inputDesc, Flags flags)
     {
-        inputLayout = nullptr;
-        vertexShader = nullptr;
-        pixelShader = nullptr;
-
+        inputLayout    = nullptr;
+        vertexShader   = nullptr;
+        geometryShader = nullptr;
+        pixelShader    = nullptr;
 
         ID3DBlob *vsShader, *gsShader, *psShader, *errorMsg;
 
-        HRESULT vshr = D3DCompileFromFile(shaderPath, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "VS", "vs_5_0", SHADER_COMPILE_FLAGS, NULL, &vsShader, &errorMsg);
-        if FAILED(vshr)
+        if (flags & VS)
         {
-            OutputDebugString((char*)errorMsg->GetBufferPointer());
-            throw "Failed to compile Vertex Shader";
+            if FAILED(D3DCompileFromFile(shaderPath, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "VS", "vs_5_0", SHADER_COMPILE_FLAGS, NULL, &vsShader, &errorMsg))
+            {
+                OutputDebugString((char*)errorMsg->GetBufferPointer());
+                throw "Failed to compile Vertex Shader";
+            }
+
+            ThrowIfFailed(device->CreateVertexShader(vsShader->GetBufferPointer(), vsShader->GetBufferSize(), NULL, &vertexShader));
+
+            if (inputDesc.size() > 0)
+            {
+                ThrowIfFailed(device->CreateInputLayout(inputDesc.begin(), inputDesc.size(), vsShader->GetBufferPointer(), vsShader->GetBufferSize(), &inputLayout));
+            }
         }
 
-        HRESULT pshr = D3DCompileFromFile(shaderPath, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "PS", "ps_5_0", SHADER_COMPILE_FLAGS, NULL, &psShader, &errorMsg);
-        if FAILED(pshr)
+        if (flags & VS)
         {
-            OutputDebugString((char*)errorMsg->GetBufferPointer());
-            throw "Failed to compile Pixel Shader";
+            if FAILED(D3DCompileFromFile(shaderPath, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "PS", "ps_5_0", SHADER_COMPILE_FLAGS, NULL, &psShader, &errorMsg))
+            {
+                OutputDebugString((char*)errorMsg->GetBufferPointer());
+                throw "Failed to compile Pixel Shader";
+            }
+
+            ThrowIfFailed(device->CreatePixelShader(psShader->GetBufferPointer(), psShader->GetBufferSize(), NULL, &pixelShader));
         }
 
-        if (inputDesc.size() > 0)
+        if (flags & GS)
         {
-            ThrowIfFailed(device->CreateInputLayout(inputDesc.begin(), inputDesc.size(), vsShader->GetBufferPointer(), vsShader->GetBufferSize(), &inputLayout));
-        }
+            if FAILED(D3DCompileFromFile(shaderPath, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "GS", "gs_5_0", SHADER_COMPILE_FLAGS, NULL, &gsShader, &errorMsg))
+            {
+                OutputDebugString((char*)errorMsg->GetBufferPointer());
+                throw "Failed to compile Geometry Shader";
+            }
 
-        ThrowIfFailed(device->CreateVertexShader(vsShader->GetBufferPointer(), vsShader->GetBufferSize(), NULL, &vertexShader));
-        ThrowIfFailed(device->CreatePixelShader(psShader->GetBufferPointer(), psShader->GetBufferSize(), NULL, &pixelShader));
+            ThrowIfFailed(device->CreateGeometryShader(gsShader->GetBufferPointer(), gsShader->GetBufferSize(), NULL, &geometryShader));
+        }
     }
 
     Shader::~Shader()
@@ -51,20 +67,6 @@ namespace Graphics
         SAFE_RELEASE(vertexShader);
         SAFE_RELEASE(pixelShader);
     }
-
-    //void Shader::setShader(ID3D11DeviceContext * deviceContext, int flags)
-    //{
-    //    if (flags & VS)
-    //    {
-    //        deviceContext->IASetInputLayout(inputLayout);
-    //        deviceContext->VSSetShader(vertexShader, nullptr, 0);
-    //    }
-    //    if (flags & PS)
-    //    {
-    //        deviceContext->PSSetShader(pixelShader, nullptr, 0);
-    //    }
-    //}
-
 
     ComputeShader::ComputeShader(ID3D11Device * device, LPCWSTR shaderPath)
     {
@@ -85,9 +87,4 @@ namespace Graphics
     {
         computeShader->Release();
     }
-
-    //void ComputeShader::setShader(ID3D11DeviceContext * deviceContext)
-    //{
-    //    deviceContext->CSSetShader(computeShader, nullptr, 0);
-    //}
 }
